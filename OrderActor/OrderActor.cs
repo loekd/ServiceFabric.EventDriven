@@ -7,6 +7,7 @@ using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Runtime;
 using Microsoft.ServiceFabric.Actors.Client;
 using OrderActor.Interfaces;
+using CustomerOrdersActor.Interfaces;
 
 namespace OrderActor
 {
@@ -28,9 +29,28 @@ namespace OrderActor
 			return info;
 		}
 
-		public Task PlaceOrderAsync(Order order)
+		public async Task PlaceOrderAsync(Order order)
 		{
-			return StateManager.AddOrUpdateStateAsync("info", order, (key, old) => order);
+			//update state
+			await StateManager.AddOrUpdateStateAsync("info", order, (key, old) => order);
+
+			//update aggregate
+			var customerOrderActorProxy = CreateCustomerOrdersActorProxy(order.CustomerId);
+			await customerOrderActorProxy.AddOrderAsync(order);
+		}
+
+		private static ICustomerOrdersActor CreateCustomerOrdersActorProxy(Guid customerId)
+		{
+			retry:
+			try
+			{
+				return ActorProxy.Create<ICustomerOrdersActor>(new ActorId(customerId));
+			}
+			catch
+			{
+				Thread.Sleep(500);
+				goto retry;
+			}
 		}
 	}
 }

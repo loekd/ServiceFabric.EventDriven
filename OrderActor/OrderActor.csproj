@@ -97,6 +97,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CustomerOrdersActor.Interfaces\CustomerOrdersActor.Interfaces.csproj">
+      <Project>{0FE5D3BD-364A-47D2-A665-64C6EA30AD28}</Project>
+      <Name>CustomerOrdersActor.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OrderActor.Interfaces\OrderActor.Interfaces.csproj">
       <Project>{78591B5F-1A03-4413-A852-56A7E2E2CAC3}</Project>
       <Name>OrderActor.Interfaces</Name>

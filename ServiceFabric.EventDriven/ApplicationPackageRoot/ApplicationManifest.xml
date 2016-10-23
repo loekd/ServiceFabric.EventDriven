@@ -7,10 +7,16 @@
     <Parameter Name="OrderActorService_PartitionCount" DefaultValue="10" />
     <Parameter Name="OrderActorService_MinReplicaSetSize" DefaultValue="3" />
     <Parameter Name="OrderActorService_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="CustomerOrdersActorService_PartitionCount" DefaultValue="10" />
+    <Parameter Name="CustomerOrdersActorService_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="CustomerOrdersActorService_TargetReplicaSetSize" DefaultValue="3" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
        ServiceManifest.xml file. -->
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="CustomerOrdersActorPkg" ServiceManifestVersion="1.0.0" />
+  </ServiceManifestImport>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="OrderActorPkg" ServiceManifestVersion="1.0.0" />
   </ServiceManifestImport>
@@ -26,6 +32,11 @@
     <Service Name="OrderActorService" GeneratedIdRef="fec57135-8a7e-4cdb-bfc3-38ffe381115d|Persisted">
       <StatefulService ServiceTypeName="OrderActorServiceType" TargetReplicaSetSize="[OrderActorService_TargetReplicaSetSize]" MinReplicaSetSize="[OrderActorService_MinReplicaSetSize]">
         <UniformInt64Partition PartitionCount="[OrderActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="CustomerOrdersActorService" GeneratedIdRef="bd132ebb-5416-41b7-b051-5e6429fb6c79|Persisted">
+      <StatefulService ServiceTypeName="CustomerOrdersActorServiceType" TargetReplicaSetSize="[CustomerOrdersActorService_TargetReplicaSetSize]" MinReplicaSetSize="[CustomerOrdersActorService_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[CustomerOrdersActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
       </StatefulService>
     </Service>
     <!-- The section below creates instances of service types, when an instance of this 

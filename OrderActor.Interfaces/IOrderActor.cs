@@ -42,17 +42,4 @@ namespace OrderActor.Interfaces
 			CustomerId = customerId;
 		}
 	}
-
-	//[DataContract]
-	//public class OrderCollection
-	//{
-	//	[DataMember]
-	//	public readonly ImmutableList<Order> Values;
-
-	//	public OrderCollection(IEnumerable<Order> values)
-	//	{
-	//		if (values == null) throw new ArgumentNullException(nameof(values));
-	//		Values = ImmutableList<Order>.Empty.AddRange(values);
-	//	}
-	//}
 }
