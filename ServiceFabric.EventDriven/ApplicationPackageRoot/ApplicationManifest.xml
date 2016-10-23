@@ -1,18 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ApplicationManifest ApplicationTypeName="ServiceFabric.EventDrivenType"
-                     ApplicationTypeVersion="1.0.0"
-                     xmlns="http://schemas.microsoft.com/2011/01/fabric"
-                     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="ServiceFabric.EventDrivenType" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
+    <Parameter Name="CustomerActorService_PartitionCount" DefaultValue="10" />
+    <Parameter Name="CustomerActorService_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="CustomerActorService_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="OrderActorService_PartitionCount" DefaultValue="10" />
+    <Parameter Name="OrderActorService_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="OrderActorService_TargetReplicaSetSize" DefaultValue="3" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
        ServiceManifest.xml file. -->
   <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="OrderActorPkg" ServiceManifestVersion="1.0.0" />
+  </ServiceManifestImport>
+  <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="CustomerActorPkg" ServiceManifestVersion="1.0.0" />
   </ServiceManifestImport>
   <DefaultServices>
+    <Service Name="CustomerActorService" GeneratedIdRef="165fab33-4fec-49ec-8f74-6e9f6ce4f5b5|Persisted">
+      <StatefulService ServiceTypeName="CustomerActorServiceType" TargetReplicaSetSize="[CustomerActorService_TargetReplicaSetSize]" MinReplicaSetSize="[CustomerActorService_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[CustomerActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="OrderActorService" GeneratedIdRef="fec57135-8a7e-4cdb-bfc3-38ffe381115d|Persisted">
+      <StatefulService ServiceTypeName="OrderActorServiceType" TargetReplicaSetSize="[OrderActorService_TargetReplicaSetSize]" MinReplicaSetSize="[OrderActorService_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[OrderActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
     <!-- The section below creates instances of service types, when an instance of this 
          application type is created. You can also create one or more instances of service type using the 
          ServiceFabric PowerShell module.

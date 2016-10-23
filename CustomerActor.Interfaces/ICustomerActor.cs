@@ -1,29 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Actors;
 
 namespace CustomerActor.Interfaces
 {
-	/// <summary>
-	/// This interface defines the methods exposed by an actor.
-	/// Clients use this interface to interact with the actor that implements it.
-	/// </summary>
 	public interface ICustomerActor : IActor
 	{
-		/// <summary>
-		/// TODO: Replace with your own actor method.
-		/// </summary>
-		/// <returns></returns>
-		Task<int> GetCountAsync();
+		Task<Customer> GetCustomerInfoAsync();
 
-		/// <summary>
-		/// TODO: Replace with your own actor method.
-		/// </summary>
-		/// <param name="count"></param>
-		/// <returns></returns>
-		Task SetCountAsync(int count);
+		
+		Task SetCustomerInfoAsync(Customer customerInfo);
+	}
+
+	[DataContract]
+	public class Customer
+	{
+		[DataMember]
+		public readonly Guid CustomerId;
+
+		[DataMember]
+		public readonly string Name;
+
+		public Customer(Guid customerId, string name)
+		{
+			if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
+
+			Name = name;
+			CustomerId = customerId;
+		}
 	}
 }
