@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServiceManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="CustomerOrdersActorPkg" Version="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <ServiceTypes>
-    <StatefulServiceType ServiceTypeName="CustomerOrdersActorServiceType" HasPersistedState="true">
+    <StatefulServiceType ServiceTypeName="ICustomerOrdersActorType" HasPersistedState="true">
       <Extensions>
-        <Extension Name="__GeneratedServiceType__" GeneratedId="bd132ebb-5416-41b7-b051-5e6429fb6c79|Persisted">
+        <Extension Name="__GeneratedServiceType__" GeneratedId="31952905-62bc-4d5e-af25-bf2f461ac7ff|Persisted">
           <GeneratedNames xmlns="http://schemas.microsoft.com/2015/03/fabact-no-schema">
-            <DefaultService Name="CustomerOrdersActorService" />
-            <ServiceEndpoint Name="CustomerOrdersActorServiceEndpoint" />
-            <ReplicatorEndpoint Name="CustomerOrdersActorServiceReplicatorEndpoint" />
-            <ReplicatorConfigSection Name="CustomerOrdersActorServiceReplicatorConfig" />
-            <ReplicatorSecurityConfigSection Name="CustomerOrdersActorServiceReplicatorSecurityConfig" />
-            <StoreConfigSection Name="CustomerOrdersActorServiceLocalStoreConfig" />
+            <DefaultService Name="ICustomerOrdersActor" />
+            <ServiceEndpoint Name="ICustomerOrdersActorEndpoint" />
+            <ReplicatorEndpoint Name="ICustomerOrdersActorReplicatorEndpoint" />
+            <ReplicatorConfigSection Name="ICustomerOrdersActorReplicatorConfig" />
+            <ReplicatorSecurityConfigSection Name="ICustomerOrdersActorReplicatorSecurityConfig" />
+            <StoreConfigSection Name="ICustomerOrdersActorLocalStoreConfig" />
           </GeneratedNames>
         </Extension>
       </Extensions>
@@ -26,8 +26,8 @@
   <ConfigPackage Name="Config" Version="1.0.0" />
   <Resources>
     <Endpoints>
-      <Endpoint Name="CustomerOrdersActorServiceEndpoint" />
-      <Endpoint Name="CustomerOrdersActorServiceReplicatorEndpoint" />
+      <Endpoint Name="ICustomerOrdersActorEndpoint" />
+      <Endpoint Name="ICustomerOrdersActorReplicatorEndpoint" />
     </Endpoints>
   </Resources>
   <!-- The content will be generated during build -->

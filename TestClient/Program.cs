@@ -38,13 +38,17 @@ namespace TestClient
 					Console.WriteLine($"Using existing customer '{customerInfo.CustomerId}'...");
 				}
 
+				//register for events
+				Console.WriteLine($"Start listening for changes for customer '{customerInfo.CustomerId}'...");
+				var customerOrdersActorProxy = CreateCustomerOrdersActorProxy(customerInfo.CustomerId);
+				customerOrdersActorProxy.InitializeAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+				
+
 				Console.WriteLine("1: Show existing customer order.");
 				Console.WriteLine("2: Create new customer order.");
 				Console.WriteLine("3: Show all existing customer orders.");
 
 				var key = Console.ReadKey(true);
-				Guid orderId;
-				IOrderActor orderActorProxy;
 
 				switch (key.Key)
 				{
@@ -168,7 +172,7 @@ namespace TestClient
 			retry:
 			try
 			{
-				return ActorProxy.Create<ICustomerOrdersActor>(new ActorId(customerId), "fabric:/ServiceFabric.EventDriven");
+				return ActorProxy.Create<ICustomerOrdersActor>(new ActorId(customerId), "fabric:/ServiceFabric.EventDriven", nameof(ICustomerOrdersActor));
 			}
 			catch
 			{

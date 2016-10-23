@@ -7,8 +7,8 @@
     <Parameter Name="OrderActorService_PartitionCount" Value="1" />
     <Parameter Name="OrderActorService_TargetReplicaSetSize" Value="1" />
     <Parameter Name="OrderActorService_MinReplicaSetSize" Value="1" />
-    <Parameter Name="CustomerOrdersActorService_PartitionCount" Value="1" />
-    <Parameter Name="CustomerOrdersActorService_TargetReplicaSetSize" Value="1" />
-    <Parameter Name="CustomerOrdersActorService_MinReplicaSetSize" Value="1" />
+    <Parameter Name="ICustomerOrdersActor_PartitionCount" Value="1" />
+    <Parameter Name="ICustomerOrdersActor_TargetReplicaSetSize" Value="1" />
+    <Parameter Name="ICustomerOrdersActor_MinReplicaSetSize" Value="1" />
   </Parameters>
 </Application>

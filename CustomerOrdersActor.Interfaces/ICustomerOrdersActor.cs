@@ -1,18 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
-using Microsoft.ServiceFabric.Actors;
 using OrderActor.Interfaces;
+using ServiceFabric.PubSubActors.Interfaces;
 
 namespace CustomerOrdersActor.Interfaces
 {
-	public interface ICustomerOrdersActor : IActor
+	public interface ICustomerOrdersActor : ISubscriberActor
 	{
 		Task<OrderCollection> GetOrdersAsync();
 		
 		Task AddOrderAsync(Order order);
+
+		Task InitializeAsync();
 	}
 
 	[DataContract]

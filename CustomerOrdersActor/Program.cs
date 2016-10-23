@@ -22,7 +22,7 @@ namespace CustomerOrdersActor
 				// For more information, see https://aka.ms/servicefabricactorsplatform
 
 				ActorRuntime.RegisterActorAsync<CustomerOrdersActor>(
-				   (context, actorType) => new ActorService(context, actorType)).GetAwaiter().GetResult();
+				   (context, actorType) => new ActorService(context, actorType, (svc, id) => new CustomerOrdersActor(svc, id))).GetAwaiter().GetResult();
 
 				Thread.Sleep(Timeout.Infinite);
 			}

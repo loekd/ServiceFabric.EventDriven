@@ -4,15 +4,22 @@ using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Runtime;
 using CustomerOrdersActor.Interfaces;
 using OrderActor.Interfaces;
+using ServiceFabric.PubSubActors.Helpers;
+using ServiceFabric.PubSubActors.Interfaces;
+using ServiceFabric.PubSubActors.SubscriberActors;
 
 namespace CustomerOrdersActor
 {
+	[ActorService(Name = nameof(ICustomerOrdersActor))]
 	[StatePersistence(StatePersistence.Persisted)]
 	internal class CustomerOrdersActor : Actor, ICustomerOrdersActor
 	{
-		public CustomerOrdersActor(ActorService actorService, ActorId actorId)
+		private readonly ISubscriberActorHelper _subscriberActorHelper;
+
+		public CustomerOrdersActor(ActorService actorService, ActorId actorId, ISubscriberActorHelper subscriberActorHelper = null)
 			: base(actorService, actorId)
 		{
+			_subscriberActorHelper = subscriberActorHelper ?? new SubscriberActorHelper();
 		}
 
 		public async Task<OrderCollection> GetOrdersAsync()
@@ -30,6 +37,22 @@ namespace CustomerOrdersActor
 			return StateManager.AddOrUpdateStateAsync<OrderCollection>("info"
 				, new OrderCollection(order)
 				, (key, old) => new OrderCollection(old.Values.Add(order)));
+		}
+
+		public Task InitializeAsync()
+		{
+			return _subscriberActorHelper.RegisterMessageTypeAsync(this, typeof(Order)); //register as subscriber for this type of messages
+		}
+
+		public Task ReceiveMessageAsync(MessageWrapper message)
+		{
+			var payload = this.Deserialize<Order>(message);
+			if (payload.CustomerId == Id.GetGuidId())
+			{
+				return AddOrderAsync(payload);
+			}
+
+			return Task.FromResult(false);
 		}
 	}
 }
