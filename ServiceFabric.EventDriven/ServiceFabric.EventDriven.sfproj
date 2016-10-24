@@ -58,6 +58,7 @@
     <ProjectReference Include="..\CustomerActor\CustomerActor.csproj" />
     <ProjectReference Include="..\CustomerOrdersActor\CustomerOrdersActor.csproj" />
     <ProjectReference Include="..\OrderActor\OrderActor.csproj" />
+    <ProjectReference Include="..\ShippingActor\ShippingActor.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
   <PropertyGroup>

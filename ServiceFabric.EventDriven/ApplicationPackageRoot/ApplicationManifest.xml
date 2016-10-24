@@ -13,13 +13,19 @@
     <Parameter Name="ICustomerOrdersActor_PartitionCount" DefaultValue="10" />
     <Parameter Name="ICustomerOrdersActor_MinReplicaSetSize" DefaultValue="3" />
     <Parameter Name="ICustomerOrdersActor_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="IShippingActor_PartitionCount" DefaultValue="10" />
+    <Parameter Name="IShippingActor_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="IShippingActor_TargetReplicaSetSize" DefaultValue="3" />
   </Parameters>
   <ServiceManifestImport>
-    <ServiceManifestRef ServiceManifestName="PackagedBrokerServicePkg" ServiceManifestVersion="1.0.0" />
+    <ServiceManifestRef ServiceManifestName="ShippingActorPkg" ServiceManifestVersion="1.0.0" />
   </ServiceManifestImport>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
        ServiceManifest.xml file. -->
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="PackagedBrokerServicePkg" ServiceManifestVersion="1.0.0" />
+  </ServiceManifestImport>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="CustomerOrdersActorPkg" ServiceManifestVersion="1.0.0" />
   </ServiceManifestImport>
@@ -53,6 +59,11 @@
     <Service Name="ICustomerOrdersActor" GeneratedIdRef="31952905-62bc-4d5e-af25-bf2f461ac7ff|Persisted">
       <StatefulService ServiceTypeName="ICustomerOrdersActorType" TargetReplicaSetSize="[ICustomerOrdersActor_TargetReplicaSetSize]" MinReplicaSetSize="[ICustomerOrdersActor_MinReplicaSetSize]">
         <UniformInt64Partition PartitionCount="[ICustomerOrdersActor_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="IShippingActor" GeneratedIdRef="606d027e-f96b-4a5b-8122-3e9be26b0103|Persisted">
+      <StatefulService ServiceTypeName="IShippingActorType" TargetReplicaSetSize="[IShippingActor_TargetReplicaSetSize]" MinReplicaSetSize="[IShippingActor_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[IShippingActor_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
       </StatefulService>
     </Service>
   </DefaultServices>

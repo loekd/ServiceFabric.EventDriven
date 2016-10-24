@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="ShippingActorPkg" Version="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+  <ServiceTypes>
+    <StatefulServiceType ServiceTypeName="IShippingActorType" HasPersistedState="true">
+      <Extensions>
+        <Extension Name="__GeneratedServiceType__" GeneratedId="606d027e-f96b-4a5b-8122-3e9be26b0103|Persisted">
+          <GeneratedNames xmlns="http://schemas.microsoft.com/2015/03/fabact-no-schema">
+            <DefaultService Name="IShippingActor" />
+            <ServiceEndpoint Name="IShippingActorEndpoint" />
+            <ReplicatorEndpoint Name="IShippingActorReplicatorEndpoint" />
+            <ReplicatorConfigSection Name="IShippingActorReplicatorConfig" />
+            <ReplicatorSecurityConfigSection Name="IShippingActorReplicatorSecurityConfig" />
+            <StoreConfigSection Name="IShippingActorLocalStoreConfig" />
+          </GeneratedNames>
+        </Extension>
+      </Extensions>
+    </StatefulServiceType>
+  </ServiceTypes>
+  <CodePackage Name="Code" Version="1.0.0">
+    <EntryPoint>
+      <ExeHost>
+        <Program>ShippingActor.exe</Program>
+      </ExeHost>
+    </EntryPoint>
+  </CodePackage>
+  <ConfigPackage Name="Config" Version="1.0.0" />
+  <Resources>
+    <Endpoints>
+      <Endpoint Name="IShippingActorEndpoint" />
+      <Endpoint Name="IShippingActorReplicatorEndpoint" />
+    </Endpoints>
+  </Resources>
+  <!-- The content will be generated during build -->
+</ServiceManifest>

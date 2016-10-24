@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Threading;
+using System.Windows.Forms;
 using CustomerActor.Interfaces;
 using CustomerOrdersActor.Interfaces;
 using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Client;
 using OrderActor.Interfaces;
+using ShippingActor.Interfaces;
 
 namespace TestClient
 {
 	class Program
 	{
+		[STAThread]
 		static void Main(string[] args)
 		{
 			while (true)
@@ -39,7 +42,7 @@ namespace TestClient
 				}
 
 				//register for events
-				Console.WriteLine($"Start listening for changes for customer '{customerInfo.CustomerId}'...");
+				Console.WriteLine($"Start listening for changes in customer orders'{customerInfo.CustomerId}'...");
 				var customerOrdersActorProxy = CreateCustomerOrdersActorProxy(customerInfo.CustomerId);
 				customerOrdersActorProxy.InitializeAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 				
@@ -47,9 +50,10 @@ namespace TestClient
 				Console.WriteLine("1: Show existing customer order.");
 				Console.WriteLine("2: Create new customer order.");
 				Console.WriteLine("3: Show all existing customer orders.");
+				Console.WriteLine("4: Get shipping info.");
 
 				var key = Console.ReadKey(true);
-
+				
 				switch (key.Key)
 				{
 					case ConsoleKey.D1:
@@ -63,12 +67,20 @@ namespace TestClient
 
 					case ConsoleKey.D3:
 						ShowAllExistingOrderInfo(customerInfo);
+						break; 
 
+					case ConsoleKey.D4:
+						ShowShippingInfo(customerInfo);
 						break;
 				}
+
+				Console.WriteLine("Hit any key to continue...");
+				Console.ReadKey(true);
 			}
 		}
+
 		
+
 		private static void ShowExistingOrderInfo()
 		{
 			Console.WriteLine($"Enter orderid:");
@@ -93,8 +105,6 @@ namespace TestClient
 				Console.WriteLine(
 					$"Found no order with orderId:\t'{orderId}'");
 			}
-			Console.WriteLine("Hit any key to continue...");
-			Console.ReadKey(true);
 		}
 
 		private static void OrderProduct(Customer customerInfo)
@@ -111,12 +121,42 @@ namespace TestClient
 			var orderId = Guid.NewGuid();
 			var orderActorProxy = CreateOrderActorProxy(orderId);
 
+			Console.WriteLine($"Start listening for changes in orders in shipping'{customerInfo.CustomerId}'...");
+			var shippingActorProxy = CreateShippingActorProxy(orderId);
+			shippingActorProxy.InitializeAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+
 			var order = new Order(orderId, customerInfo.CustomerId, productName, amount);
 			orderActorProxy.PlaceOrderAsync(order).ConfigureAwait(false).GetAwaiter().GetResult();
 
 			Console.WriteLine($"Placed order: {amount} of '{productName}' with orderId:\t'{orderId}'");
-			Console.WriteLine("Copy the orderid. Hit any key to continue...");
-			Console.ReadKey(true);
+			Clipboard.SetText(orderId.ToString("D"));
+			Console.WriteLine("Copied the orderid.");
+		}
+
+		private static void ShowShippingInfo(Customer customerInfo)
+		{
+			Console.WriteLine($"Enter orderid:");
+			Guid orderId;
+			string orderIdInput = Console.ReadLine();
+
+			if (!Guid.TryParse(orderIdInput, out orderId))
+			{
+				Console.WriteLine("invalid input...");
+				return;
+			}
+			var shippingActorProxy = CreateShippingActorProxy(orderId);
+			var info = shippingActorProxy.GetShippingInfoAsync(orderId).ConfigureAwait(false).GetAwaiter().GetResult();
+			if (info != null)
+			{
+				Console.WriteLine(
+					$"Found shipping record: status:'{info.Status}' - {info.Amount} of '{info.Product}' with orderId:\t'{info.OrderId}' for customer '{info.CustomerId}'");
+			}
+			else
+			{
+				Console.WriteLine(
+					$"Found no shipping record with orderId:\t'{orderId}'");
+			}
+			
 		}
 
 		private static ICustomerActor CreateCustomerActorProxy(string customerName)
@@ -149,8 +189,6 @@ namespace TestClient
 			{
 				Console.WriteLine($"Found no orders for customer '{customerInfo.CustomerId}'");
 			}
-			Console.WriteLine("Hit any key to continue...");
-			Console.ReadKey(true);
 		}
 
 		private static IOrderActor CreateOrderActorProxy(Guid orderId)
@@ -180,5 +218,20 @@ namespace TestClient
 				goto retry;
 			}
 		}
+
+		private static IShippingActor CreateShippingActorProxy(Guid orderId)
+		{
+			retry:
+			try
+			{
+				return ActorProxy.Create<IShippingActor>(new ActorId(orderId), "fabric:/ServiceFabric.EventDriven", nameof(IShippingActor));
+			}
+			catch
+			{
+				Thread.Sleep(500);
+				goto retry;
+			}
+		}
+
 	}
 }

@@ -10,5 +10,8 @@
     <Parameter Name="ICustomerOrdersActor_PartitionCount" Value="1" />
     <Parameter Name="ICustomerOrdersActor_TargetReplicaSetSize" Value="1" />
     <Parameter Name="ICustomerOrdersActor_MinReplicaSetSize" Value="1" />
+    <Parameter Name="IShippingActor_PartitionCount" Value="1" />
+    <Parameter Name="IShippingActor_TargetReplicaSetSize" Value="1" />
+    <Parameter Name="IShippingActor_MinReplicaSetSize" Value="1" />
   </Parameters>
 </Application>
