@@ -33,27 +33,9 @@ namespace OrderActor
 			await StateManager.AddOrUpdateStateAsync("info", order, (key, old) => order);
 
 			//publish a notification about the state change
-			await _publisherActorHelper.PublishMessageAsync(this, order);
+			await _publisherActorHelper.PublishMessageAsync(this, new OrderCreatedEvent(order.OrderId, order.CustomerId, order.Product, order.Amount));
 			
-			//update aggregate
-			//var customerOrderActorProxy = CreateCustomerOrdersActorProxy(order.CustomerId);
-			//await customerOrderActorProxy.AddOrderAsync(order);
+			//no longer need to know all interested parties
 		}
-
-		//no longer need to know all interested parties:
-
-		//private static ICustomerOrdersActor CreateCustomerOrdersActorProxy(Guid customerId)
-		//{
-		//	retry:
-		//	try
-		//	{
-		//		return ActorProxy.Create<ICustomerOrdersActor>(new ActorId(customerId));
-		//	}
-		//	catch
-		//	{
-		//		Thread.Sleep(500);
-		//		goto retry;
-		//	}
-		//}
 	}
 }

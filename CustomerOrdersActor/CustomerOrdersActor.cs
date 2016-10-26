@@ -41,7 +41,7 @@ namespace CustomerOrdersActor
 
 		public Task InitializeAsync()
 		{
-			return _subscriberActorHelper.RegisterMessageTypeAsync(this, typeof(Order)); //register as subscriber for this type of messages
+			return _subscriberActorHelper.RegisterMessageTypeAsync(this, typeof(OrderCreatedEvent)); //register as subscriber for this type of events
 		}
 
 		public Task ReceiveMessageAsync(MessageWrapper message)
