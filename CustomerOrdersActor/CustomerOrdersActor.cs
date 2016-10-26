@@ -41,15 +41,15 @@ namespace CustomerOrdersActor
 
 		public Task InitializeAsync()
 		{
-			return _subscriberActorHelper.RegisterMessageTypeAsync(this, typeof(Order)); //register as subscriber for this type of messages
+			return _subscriberActorHelper.RegisterMessageTypeAsync(this, typeof(OrderCreatedEvent)); //register as subscriber for this type of events
 		}
 
 		public Task ReceiveMessageAsync(MessageWrapper message)
 		{
-			var payload = this.Deserialize<Order>(message);
+			var payload = this.Deserialize<OrderCreatedEvent>(message);
 			if (payload.CustomerId == Id.GetGuidId())
 			{
-				return AddOrderAsync(payload);
+				return AddOrderAsync(new Order(payload.OrderId, payload.CustomerId, payload.Product, payload.Amount));
 			}
 
 			return Task.FromResult(false);

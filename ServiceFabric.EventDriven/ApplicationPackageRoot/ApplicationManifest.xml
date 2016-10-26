@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="ServiceFabric.EventDrivenType" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
-    <Parameter Name="CustomerActorService_PartitionCount" DefaultValue="10" />
-    <Parameter Name="CustomerActorService_MinReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="CustomerActorService_TargetReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="OrderActorService_PartitionCount" DefaultValue="10" />
-    <Parameter Name="OrderActorService_MinReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="OrderActorService_TargetReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="PackagedBrokerService_TargetReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="PackagedBrokerService_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="CustomerActorService_PartitionCount" DefaultValue="1" />
+    <Parameter Name="CustomerActorService_MinReplicaSetSize" DefaultValue="1" />
+    <Parameter Name="CustomerActorService_TargetReplicaSetSize" DefaultValue="1" />
+    <Parameter Name="OrderActorService_PartitionCount" DefaultValue="1" />
+    <Parameter Name="OrderActorService_MinReplicaSetSize" DefaultValue="1" />
+    <Parameter Name="OrderActorService_TargetReplicaSetSize" DefaultValue="1" />
+    <Parameter Name="PackagedBrokerService_TargetReplicaSetSize" DefaultValue="1" />
+    <Parameter Name="PackagedBrokerService_MinReplicaSetSize" DefaultValue="1" />
     <Parameter Name="PackagedBrokerService_PartitionCount" DefaultValue="1" />
-    <Parameter Name="ICustomerOrdersActor_PartitionCount" DefaultValue="10" />
-    <Parameter Name="ICustomerOrdersActor_MinReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="ICustomerOrdersActor_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="ICustomerOrdersActor_PartitionCount" DefaultValue="1" />
+    <Parameter Name="ICustomerOrdersActor_MinReplicaSetSize" DefaultValue="1" />
+    <Parameter Name="ICustomerOrdersActor_TargetReplicaSetSize" DefaultValue="1" />
   </Parameters>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="PackagedBrokerServicePkg" ServiceManifestVersion="1.0.0" />

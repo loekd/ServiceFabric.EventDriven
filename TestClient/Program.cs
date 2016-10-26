@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Windows.Forms;
 using CustomerActor.Interfaces;
 using CustomerOrdersActor.Interfaces;
 using Microsoft.ServiceFabric.Actors;
@@ -10,6 +11,7 @@ namespace TestClient
 {
 	class Program
 	{
+		[STAThread]
 		static void Main(string[] args)
 		{
 			while (true)
@@ -115,7 +117,9 @@ namespace TestClient
 			orderActorProxy.PlaceOrderAsync(order).ConfigureAwait(false).GetAwaiter().GetResult();
 
 			Console.WriteLine($"Placed order: {amount} of '{productName}' with orderId:\t'{orderId}'");
-			Console.WriteLine("Copy the orderid. Hit any key to continue...");
+			Console.WriteLine("Copied the orderid.");
+			Clipboard.SetText(orderId.ToString("d"));
+			Console.WriteLine(" Hit any key to continue...");
 			Console.ReadKey(true);
 		}
 

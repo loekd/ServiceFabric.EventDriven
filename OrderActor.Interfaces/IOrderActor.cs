@@ -17,7 +17,7 @@ namespace OrderActor.Interfaces
 	}
 
 	[DataContract]
-	public class Order
+	public sealed class Order
 	{
 		[DataMember]
 		public readonly Guid OrderId;
@@ -32,6 +32,33 @@ namespace OrderActor.Interfaces
 		public readonly int Amount;
 
 		public Order(Guid orderId, Guid customerId, string product, int amount)
+		{
+			if (product == null) throw new ArgumentNullException(nameof(product));
+			if (amount <= 0) throw new ArgumentOutOfRangeException(nameof(amount));
+
+			OrderId = orderId;
+			Product = product;
+			Amount = amount;
+			CustomerId = customerId;
+		}
+	}
+
+	[DataContract]
+	public class OrderCreatedEvent
+	{
+		[DataMember]
+		public readonly Guid OrderId;
+
+		[DataMember]
+		public readonly Guid CustomerId;
+
+		[DataMember]
+		public readonly string Product;
+
+		[DataMember]
+		public readonly int Amount;
+
+		public OrderCreatedEvent(Guid orderId, Guid customerId, string product, int amount)
 		{
 			if (product == null) throw new ArgumentNullException(nameof(product));
 			if (amount <= 0) throw new ArgumentOutOfRangeException(nameof(amount));
